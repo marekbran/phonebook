@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import phonebookServices from './services/phonebookServices'
+import phonebookServices from '../services/phonebookServices'
 
 
 const Numbers = ({ persons, setPersons, setNewError, setNewMessage }) => {
