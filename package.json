@@ -1,7 +1,7 @@
 {
   "name": "phonebook",
   "version": "1.0.0",
-  "main": "phonebook_backend/index.js",
+  "main": "index.js",
   "scripts": {
   "dev": "nodemon phonebook_backend/index.js",
   "start": "node index.js",
