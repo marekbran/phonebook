@@ -1,11 +1,14 @@
 const { exec } = require('child_process');
 const path = require('path');
+const express = require('express');
+const app = express();
 
 // Change the working directory to the backend directory
 const backendDir = path.join(__dirname, 'phonebook_backend');
 
 // Command to run the backend server with npm
 const command = 'npm run dev';
+;
 
 exec(command, { cwd: backendDir }, (error, stdout, stderr) => {
     if (error) {
@@ -19,4 +22,9 @@ exec(command, { cwd: backendDir }, (error, stdout, stderr) => {
     }
 
     console.log(`Backend server stdout: ${stdout}`);
+});
+
+const PORT = 3001;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
