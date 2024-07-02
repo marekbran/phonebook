@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-  "dev": "nodemon index.js",
-  "start": "node index.js",
-  "build:ui": "build:ui: rm -rf dist && cd phonebook_frontend && npm run build && cp -r dist ../",
-  "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
-},
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "build:ui": "rm -rf dist && cd phonebook_frontend && npm run build && cp -r dist ../",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
+  },
   "author": "",
   "license": "ISC",
   "description": "",
@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "morgan": "^1.10.0"
   }
 }
