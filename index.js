@@ -24,7 +24,7 @@ exec(command, { cwd: backendDir }, (error, stdout, stderr) => {
     console.log(`Backend server stdout: ${stdout}`);
 });
 
-const PORT = 3001;
+const PORT = 5317;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
