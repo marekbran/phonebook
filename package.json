@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
   "dev": "nodemon phonebook_backend/index.js",
-  "start": "node index.js",
+  "start": "node phonebook_backend/index.js",
   "build:ui": "build:ui: rm -rf dist && cd phonebook_frontend && npm run build && cp -r dist ../",
   "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
 },
