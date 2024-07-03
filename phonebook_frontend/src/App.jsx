@@ -109,13 +109,18 @@ const App = () => {
   const [filteredPersons, setFilteredPersons] = useState([]);
   const [newMessage, setNewMessage] = useState(null)
   const [newError, setNewError] = useState(null)
-
   useEffect(() => {
-    phonebookServices.getAll()
-      .then(initialPeople => setPersons(initialPeople))
-      .catch(error => console.log(error));
+  const fetchData = async () => {
+      try {
+        const response = await axios.get('/api/persons');
+        setPersons(response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+  
+    fetchData();
   }, []);
-
   const addPerson = (event) => {
     event.preventDefault()
     const personObject = {
