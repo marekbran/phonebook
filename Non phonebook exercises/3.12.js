@@ -6,7 +6,7 @@ const name = process.argv[3];
 const number = process.argv[4];
 
 
-const uri = "mongodb+srv://MarekBran:${password}@tomaszabazadanych.qosjlni.mongodb.net/?appName=TomaszaBazaDanych";
+const url = `mongodb+srv://MarekBran:${password}@tomaszabazadanych.qosjlni.mongodb.net/?appName=TomaszaBazaDanych`;
 
 
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
