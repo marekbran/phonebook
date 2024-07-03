@@ -86,12 +86,11 @@ app.delete('/persons/:id', (req, res) => {
       res.status(500).json({ error: 'Error deleting data from database.' });
     })
 })
+app.post('/persons', (request, response) => {
+  const body = request.body
 
-app.post('/persons/:name/:body', (req, res) => {
-  const body = req.body;
-
-  if (!body.name || !body.number) {
-    return res.status(400).json({ error: 'name or number missing' });
+  if (body.content === undefined) {
+    return response.status(400).json({ error: 'content missing' })
   }
 
   const person = new Person({
