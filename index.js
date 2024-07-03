@@ -87,7 +87,7 @@ app.delete('/persons/:id', (req, res) => {
     })
 })
 
-app.post('/persons', (req, res) => {
+app.post('/persons/:name/:body', (req, res) => {
   const body = req.body;
 
   if (!body.name || !body.number) {
