@@ -59,6 +59,8 @@ app.get('/', (req, res) => {
 });
 
 app.get('/persons', (req, res) => {
+  console.log(persons)
+  console.log(Person)
   Person.find({}).then(persons => {
     res.json(persons)
   })
