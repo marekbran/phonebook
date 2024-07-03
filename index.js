@@ -29,6 +29,7 @@ app.use((req, res, next) => {
   }
 });
 
+
 morgan.token('params', (req) => JSON.stringify(req.params));
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :params'));
 
@@ -46,6 +47,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/persons', (req, res) => {
+  console.log("kurwaaaaaaaaa");
   Person.find({}).then(persons => {
     res.json(persons);
   })
@@ -92,27 +94,34 @@ app.delete('/persons/:id', (req, res) => {
       res.status(500).json({ error: 'Error deleting data from database.' });
     });
 });
+app.post('/persons/:name/:number', (req, res) => {
+  const body = req.params;
+  const id = Math.random(1000);
 
-app.post('/persons', (req, res) => {
-  const body = req.body;
-
-  if (!body.name || !body.number) {
-    return res.status(400).json({ error: 'name or number missing' });
+  if (!body.name) {
+    return res.status(400).json({ error: 'name missing' });
   }
 
-  const person = new Person({
+  if (!body.number) {
+    return res.status(400).json({ error: 'number missing' });
+  }
+
+  if (persons.find(person => person.name === body.name)) {
+    return res.status(400).json({ error: 'name must be unique' });
+  }
+
+  if (persons.find(person => person.number === body.number)) {
+    return res.status(400).json({ error: 'number must be unique' });
+  }
+
+  const person = {
+    id,
     name: body.name,
     number: body.number
+  };
+  person.save().then(savedPerson => {
+    res.json(savedPerson);
   });
-
-  person.save()
-    .then(savedPerson => {
-      res.json(savedPerson);
-    })
-    .catch(error => {
-      console.log(error);
-      res.status(500).json({ error: 'Error saving data to database.' });
-    });
 });
 
 const PORT = process.env.PORT || 3001;
