@@ -33,14 +33,6 @@ app.use((req, res, next) => {
 morgan.token('params', (req) => JSON.stringify(req.params));
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :params'));
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => {
-    console.log('Connected to MongoDB');
-  })
-  .catch((error) => {
-    console.error('Error connecting to MongoDB:', error.message);
-  });
 
 app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>');
@@ -87,7 +79,7 @@ app.get('/info', (req, res) => {
 app.delete('/persons/:id', (req, res) => {
   Person.findByIdAndRemove(req.params.id)
     .then(() => {
-      res.status(204).end();
+      res.status(200).end();
     })
     .catch(error => {
       console.log(error);
