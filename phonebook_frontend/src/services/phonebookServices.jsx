@@ -2,8 +2,11 @@ import axios from 'axios'
 const baseUrl = 'http://localhost:3001/persons'
 
 const getAll = () => {
-  const request = axios.get(baseUrl)
-  return request.then(response => response.data).catch(error => console.log(error))
+  return Person.find({}).then(persons => {
+    return persons.map(person => person.toJSON())
+  }).catch(error => {
+    console.log(error.message + ' did not connect.')
+  })
 }
 
 const create = newObject=> {

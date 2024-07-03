@@ -33,6 +33,7 @@ app.use((req, res, next) => {
 
 
 morgan.token('params', (req) => JSON.stringify(req.params));
+
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :params'));
 
 let persons = [
