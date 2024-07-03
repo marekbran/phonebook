@@ -1,5 +1,6 @@
 import axios from 'axios'
 const baseUrl = 'http://localhost:3001/persons'
+const Person = require('./models/person')
 
 const getAll = () => {
   return Person.find({}).then(persons => {
