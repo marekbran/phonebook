@@ -46,8 +46,8 @@ app.get('/persons', (req, res) => {
   .catch(error => {
     console.log(error);
     res.status(500).json({ error: 'Error fetching data from database.' });
-  });
-});
+  })
+})
 
 app.get('/persons/:id', (req, res) => {
   Person.findById(req.params.id)
@@ -61,8 +61,8 @@ app.get('/persons/:id', (req, res) => {
     .catch(error => {
       console.log(error);
       res.status(500).json({ error: 'Error fetching data from database.' });
-    });
-});
+    })
+})
 
 app.get('/info', (req, res) => {
   Person.countDocuments({})
@@ -73,8 +73,8 @@ app.get('/info', (req, res) => {
     .catch(error => {
       console.log(error);
       res.status(500).json({ error: 'Error fetching data from database.' });
-    });
-});
+    })
+})
 
 app.delete('/persons/:id', (req, res) => {
   Person.findByIdAndRemove(req.params.id)
@@ -84,37 +84,30 @@ app.delete('/persons/:id', (req, res) => {
     .catch(error => {
       console.log(error);
       res.status(500).json({ error: 'Error deleting data from database.' });
-    });
-});
-app.post('/persons/:name/:number', (req, res) => {
-  const body = req.params;
-  const id = Math.random(1000);
+    })
+})
 
-  if (!body.name) {
-    return res.status(400).json({ error: 'name missing' });
+app.post('/persons', (req, res) => {
+  const body = req.body;
+
+  if (!body.name || !body.number) {
+    return res.status(400).json({ error: 'name or number missing' });
   }
 
-  if (!body.number) {
-    return res.status(400).json({ error: 'number missing' });
-  }
-
-  if (persons.find(person => person.name === body.name)) {
-    return res.status(400).json({ error: 'name must be unique' });
-  }
-
-  if (persons.find(person => person.number === body.number)) {
-    return res.status(400).json({ error: 'number must be unique' });
-  }
-
-  const person = {
-    id,
+  const person = new Person({
     name: body.name,
     number: body.number
-  };
-  person.save().then(savedPerson => {
-    res.json(savedPerson);
   });
-});
+
+  person.save()
+    .then(savedPerson => {
+      res.json(savedPerson);
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(500).json({ error: 'Error saving data to database.' });
+    })
+})
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
