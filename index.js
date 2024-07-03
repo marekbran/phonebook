@@ -3,6 +3,8 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const app = express();
+const mongoose = require('mongoose')
+const uri = "mongodb+srv://MarekBran:VJl3EwHEu6HcwgvE@tomaszabazadanych.qosjlni.mongodb.net/?appName=TomaszaBazaDanych";
 
 app.use(express.json());
 app.use(express.static('dist'));
