@@ -123,7 +123,7 @@ const App = () => {
       number: newNumber,
       id: String(persons.length + 1)
     }
-
+    console.log("personObject: ", personObject)
     if (Array.isArray(persons) && persons.some((person) => person.name === newName && person.number === newNumber)) {
       alert(`${newName} is already added to phonebook`)
       return
