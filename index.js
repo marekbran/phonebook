@@ -87,8 +87,9 @@ app.delete('/persons/:id', (req, res) => {
     })
 })
 app.post('/persons', (request, response) => {
-  const body = request.body
 
+  const body = request.body
+ 
 
   if (body.content === undefined) {
     return response.status(400).json({ error: 'content missing' })
@@ -96,8 +97,8 @@ app.post('/persons', (request, response) => {
 
 
   const person = new Person({
-    number: body.name.number,
-
+    name: body.name,
+    number: body.number,
   })
   consolre.log('person', person)
 
