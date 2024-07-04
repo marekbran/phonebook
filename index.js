@@ -87,6 +87,7 @@ app.delete('/persons/:id', (req, res) => {
     })
 })
 app.post('/persons', (request, response) => {
+  console.log('Request')
   console.log('Reqquest Body:', request.body.name)
   const body = request.body
   console.log("here")
