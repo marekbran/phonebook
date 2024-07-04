@@ -87,7 +87,7 @@ app.delete('/persons/:id', (req, res) => {
     })
 })
 app.post('/persons', (request, response) => {
-  console.log('Request Body:', request.body.name)
+  console.log('Request Body:', request.body)
   const body = request.body
 
   if (body.content === undefined) {
