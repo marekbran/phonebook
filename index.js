@@ -94,9 +94,18 @@ app.post('/persons/', (request, response) => {
     return response.status(400).json({ error: 'content missing' })
   }
 
+  const name = body.name
+  if (name === undefined) {
+    return response.status(400).json({ error: 'name missing' })
+  }
+  const number = body.number
+  if (number === undefined) {
+    return response.status(400).json({ error: 'number missing' })
+  }
+
   const person = new Person({
-    number: body.number,
-    name: body.name,
+    number,
+    name,
   })
 
   person.save()
