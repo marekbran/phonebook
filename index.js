@@ -86,7 +86,7 @@ app.delete('/persons/:id', (req, res) => {
       res.status(500).json({ error: 'Error deleting data from database.' });
     })
 })
-app.post('/persons', (request, response) => {
+app.post('/persons/', (request, response) => {
   console.log('Request Body:', request.body)
   const body = request.body
 
@@ -94,11 +94,9 @@ app.post('/persons', (request, response) => {
     return response.status(400).json({ error: 'content missing' })
   }
 
-
-
   const person = new Person({
-    number,
-    name,
+    number: body.number,
+    name: body.name,
   })
 
   person.save()
