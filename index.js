@@ -97,7 +97,7 @@ app.post('/persons', (request, response) => {
 
   const person = new Person({
     number: body.name.number,
-    name: body.name.name,
+
   })
   consolre.log('person', person)
 
