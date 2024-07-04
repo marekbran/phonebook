@@ -98,6 +98,7 @@ app.post('/persons', (request, response) => {
     number: body.number,
     name: body.name,
   })
+  consolre.log('person', person)
 
   person.save()
     .then(savedPerson => {
