@@ -93,10 +93,11 @@ app.post('/persons', (request, response) => {
   if (body.content === undefined) {
     return response.status(400).json({ error: 'content missing' })
   }
+  console.log("here")
 
   const person = new Person({
-    number: body.number,
-    name: body.name,
+    number: body.name.number,
+    name: body.name.name,
   })
   consolre.log('person', person)
 
