@@ -86,7 +86,7 @@ app.delete('/persons/:id', (req, res) => {
       res.status(500).json({ error: 'Error deleting data from database.' });
     })
 })
-app.post('/persons/:number', (request, response) => {
+app.post('/persons/', (request, response) => {
   console.log('Request Body:', request.body)
   const body = request.body
 
@@ -95,8 +95,8 @@ app.post('/persons/:number', (request, response) => {
   }
 
   const person = new Person({
-    name: "Edward",
-    number: body.number
+    number: body.number,
+    name: body.name
   });
 
   person.save()
