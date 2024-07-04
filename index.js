@@ -96,8 +96,8 @@ app.post('/persons/', (request, response) => {
 
   const person = new Person({
     number: body.number,
-    name: body.name
-  });
+    name: body.name,
+  })
 
   person.save()
     .then(savedPerson => {
