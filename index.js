@@ -90,7 +90,10 @@ app.post('/persons', (request, response) => {
 
   const body = request.body
  
-
+  if (!body.name || !body.number) {
+    console.log('Missing name or number');
+    return response.status(400).json({ error: 'name or number missing' });
+  }
 
 
   const person = new Person({
