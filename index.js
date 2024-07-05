@@ -1,14 +1,14 @@
-const expresponses = requestuire('expresponses');
-const morgan = requestuire('morgan');
-const cors = requestuire('cors');
-const mongoose = requestuire('mongoose');
-requestuire('dotenv').config();
-const Person = requestuire('./models/person');
+const express = require('express');
+const morgan = require('morgan');
+const cors = require('cors');
+const mongoose = require('mongoose');
+require('dotenv').config();
+const Person = require('./models/person');
 
-const app = expresponses();
+const app = express();
 
-app.use(expresponses.json());
-app.use(expresponses.static('dist'));
+app.use(express.json());
+app.use(express.static('dist'));
 
 app.use(cors({
   origin: '*',
@@ -18,76 +18,76 @@ app.use(cors({
   optionsSuccessStatus: 200
 }));
 
-app.use((request, response, next) => {
-  response.header('Access-Control-Allow-Private-Network', '*');
-  if (request.method === 'OPTIONS') {
-    response.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    response.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    response.sendStatus(200);
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Private-Network', '*');
+  if (req.method === 'OPTIONS') {
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.sendStatus(200);
   } else {
     next();
   }
 });
 
 
-morgan.token('params', (request) => JSON.stringify(request.params));
-app.use(morgan(':method :url :status :response[content-length] - :responseponse-time ms :params'));
+morgan.token('params', (req) => JSON.stringify(req.params));
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :params'));
 
 
-app.get('/', (request, response) => {
-  response.send('<h1>Hello World!</h1>');
+app.get('/', (req, res) => {
+  res.send('<h1>Hello World!</h1>');
 });
 
-app.get('/persons', (request, response) => {
+app.get('/persons', (req, res) => {
   Person.find({}).then(persons => {
-    response.json(persons);
+    res.json(persons);
   })
   .catch(error => {
     console.log(error);
-    response.status(500).json({ error: 'Error fetching data from database.' });
+    res.status(500).json({ error: 'Error fetching data from database.' });
   })
 })
 
-app.get('/persons/:id', (request, response) => {
-  Person.findById(request.params.id)
+app.get('/persons/:id', (req, res) => {
+  Person.findById(req.params.id)
     .then(person => {
       if (person) {
-        response.json(person);
+        res.json(person);
       } else {
-        response.status(404).end();
+        res.status(404).end();
       }
     })
     .catch(error => {
       console.log(error);
-      response.status(500).json({ error: 'Error fetching data from database.' });
+      res.status(500).json({ error: 'Error fetching data from database.' });
     })
 })
 
-app.get('/info', (request, response) => {
+app.get('/info', (req, res) => {
   Person.countDocuments({})
     .then(count => {
       const currentTime = new Date().toLocaleString();
-      response.send(`<p>requestuest received at ${currentTime}, ${count} entries in the phonebook</p>`);
+      res.send(`<p>Request received at ${currentTime}, ${count} entries in the phonebook</p>`);
     })
     .catch(error => {
       console.log(error);
-      response.status(500).json({ error: 'Error fetching data from database.' });
+      res.status(500).json({ error: 'Error fetching data from database.' });
     })
 })
 
-app.delete('/persons/:id', (request, response) => {
-  Person.findByIdAndRemove(request.params.id)
+app.delete('/persons/:id', (req, res) => {
+  Person.findByIdAndRemove(req.params.id)
     .then(() => {
-      response.status(200).end();
+      res.status(200).end();
     })
     .catch(error => {
       console.log(error);
-      response.status(500).json({ error: 'Error deleting data from database.' });
+      res.status(500).json({ error: 'Error deleting data from database.' });
     })
 })
-app.post('/persons', (requestuest, response) => {
+app.post('/persons', (request, response) => {
 
-  const body = requestuest.body
+  const body = request.body
  
   if (!body.name || !body.number) {
     console.log('Missing name or number');
@@ -100,13 +100,14 @@ app.post('/persons', (requestuest, response) => {
     number: body.number,
   })
 
+
   person.save()
     .then(savedPerson => {
-      response.json(savedPerson);
+      res.json(savedPerson);
     })
     .catch(error => {
       console.log(error);
-      response.status(500).json({ error: 'Error saving data to database.' });
+      res.status(500).json({ error: 'Error saving data to database.' });
     })
 })
 
