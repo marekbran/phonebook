@@ -16,7 +16,7 @@ app.use(cors({
   exposedHeaders: ['Access-Control-Allow-Private-Network'],
   preflightContinue: true,
   optionsSuccessStatus: 200
-}));
+}))
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Private-Network', '*');
@@ -27,28 +27,39 @@ app.use((req, res, next) => {
   } else {
     next();
   }
-});
+})
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  } else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
+  }
+
+  next(error)
+}
+
+app.use(errorHandler)
 
 
 morgan.token('params', (req) => JSON.stringify(req.params));
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :params'));
 
 
-app.get('/', (req, res) => {
+app.get('/', (req, res, next) => {
   res.send('<h1>Hello World!</h1>');
 });
 
-app.get('/persons', (req, res) => {
+app.get('/api/persons', (req, res, next) => {
   Person.find({}).then(persons => {
     res.json(persons);
   })
-  .catch(error => {
-    console.log(error);
-    res.status(500).json({ error: 'Error fetching data from database.' });
-  })
+  .catch(error => next(error))
 })
 
-app.get('/persons/:id', (req, res) => {
+app.get('/api/persons/:id', (req, res, next) => {
   Person.findById(req.params.id)
     .then(person => {
       if (person) {
@@ -57,36 +68,27 @@ app.get('/persons/:id', (req, res) => {
         res.status(404).end();
       }
     })
-    .catch(error => {
-      console.log(error);
-      res.status(500).json({ error: 'Error fetching data from database.' });
-    })
+    .catch(error => next(error))
 })
 
-app.get('/info', (req, res) => {
+app.get('/info', (req, res, next) => {
   Person.countDocuments({})
     .then(count => {
       const currentTime = new Date().toLocaleString();
       res.send(`<p>Request received at ${currentTime}, ${count} entries in the phonebook</p>`);
     })
-    .catch(error => {
-      console.log(error);
-      res.status(500).json({ error: 'Error fetching data from database.' });
-    })
+    .catch(error => next(error))
 })
 
-app.delete('/persons/:id', (req, res) => {
-  Person.findByIdAndRemove(req.params.id)
+app.delete('/api/persons/:id', (req, res, next) => {
+  Person.findOneAndDelete({ _id: req.params.id })
     .then(() => {
       res.status(200).end();
     })
-    .catch(error => {
-      console.log(error);
-      res.status(500).json({ error: 'Error deleting data from database.' });
-    })
+    .catch(error => next(error))
 })
-app.post('/persons', (request, response) => {
-
+app.post('/api/persons', (request, response, next) => {
+  console.log("r", request.body)
   const body = request.body
  
   if (!body.name || !body.number) {
@@ -103,13 +105,26 @@ app.post('/persons', (request, response) => {
 
   person.save()
     .then(savedPerson => {
-      res.json(savedPerson);
+      response.json(savedPerson);
     })
-    .catch(error => {
-      console.log(error);
-      res.status(500).json({ error: 'Error saving data to database.' });
-    })
+    .catch(error => next(error))
 })
+
+app.put('/api/persons/:id', (request, response, next) => {
+  const body = request.body
+
+  const person = {
+    name: body.name,
+    number: body.number,
+  }
+
+  Person.findByIdAndUpdate(request.params.id, person, { new: true, runValidators: true, context: 'query' })
+    .then(updatedperson => {
+      response.json(updatedperson)
+    })
+    .catch(error => next(error))
+})
+
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
