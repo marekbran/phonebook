@@ -28,13 +28,13 @@ mongoose.connect(url)
             return false;
           }
           const [firstPart, secondPart] = parts;
-          if (firstPart.length < 2 || firstPart.length > 3) {
+          if (firstPart.length < 2 || firstPart.length > 4) {
             return false;
           }
-          if (secondPart.length < 8) {
+          if (secondPart.length < 6) {
             return false;
           }
-          return /^[0-9]+$/.test(value)
+          return /^[0-9]+$/.test(firstPart) && /^[0-9]+$/.test(secondPart)
         },
         message: 'Invalid phone number format',
       },
