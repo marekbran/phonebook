@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "build:ui": "build:ui: rm -rf dist && cd ../phonebook_frontend && npm run build && cp -r dist ../",
+    "build:ui": "build:ui: rm -rf dist && cd ./phonebook_frontend && npm run build && cp -r dist ../",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
   },
   "author": "MB",
