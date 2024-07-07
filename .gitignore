@@ -1,4 +1,4 @@
 node_modules
 .env
-dist/
+
 phonebook_frontend
