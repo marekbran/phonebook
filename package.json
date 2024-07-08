@@ -6,7 +6,8 @@
     "dev": "nodemon index.js",
     "start": "node index.js",
     "build:ui": "rm -rf dist && cd phonebook_frontend && npm install && npm run build && cp -r build ../dist",
-    "deploy:full": "npm run build:ui && git add . && git commit -m 'uibuild' && git push"
+    "deploy:full": "npm run build:ui && git add . && git commit -m 'uibuild' && git push",
+    "lint": "eslint ."
   },
   "author": "MB",
   "license": "ISC",
@@ -20,6 +21,9 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "@stylistic/eslint-plugin-js": "^2.3.0",
+    "eslint": "^9.6.0",
+    "globals": "^15.8.0",
     "nodemon": "^2.0.7"
   }
 }
